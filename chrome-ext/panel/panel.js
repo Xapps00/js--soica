@@ -4,7 +4,7 @@ $(function() {
   var actions = {
     unknownAction: function(ret) {
       if(typeof ret !== 'string') {
-        ret = '' + ret + '<hr />' + JSON.stringify(ret);
+        ret = '' + ret.from + ' to ' + ret.target + '<hr />' + JSON.stringify(JSON.parse(ret.message), null, ' ' );
       }
       $('#output').html(ret);
     }

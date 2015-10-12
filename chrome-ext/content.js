@@ -41,33 +41,24 @@ function pageScript() {
   };
 
   // patch soket.io
-  var soketPrototype = io.Socket.prototype;
-  if(!soketPrototype._on && !soketPrototype._emit) {
-    soketPrototype._on = soketPrototype.on;
-    soketPrototype.on = function () {
-      var msg = {
-        target: 'devtool',
-        action: 'socketOn',
-        message: JSON.stringify(arguments)
-      };
-      window.postMessage(msg, "*");
-      console.info('Patched func', msg);
-
-      return this._on.apply(this, arguments);
-    };
-    soketPrototype._emit = soketPrototype.emit;
-    soketPrototype.emit = function () {
-      var msg = {
-        target: 'devtool',
-        action: 'socketEmit',
-        message: JSON.stringify(arguments)
-      };
-      window.postMessage(msg, "*");
-      console.info('Patched func', msg);
-
-      return this._emit.apply(this, arguments);
-    };
-  }
+  var listOfPatchedMethods = ['packet', 'onPacket'];
+  var soketPrototype = io.SocketNamespace.prototype;
+  listOfPatchedMethods.forEach(function(name) {
+    if(!soketPrototype['_' + name]) {
+      var origFunction = soketPrototype[name];
+      soketPrototype['_' + name] = origFunction;
+      soketPrototype[name] = function() {
+        var msg = {
+          target: 'devtool',
+          action: '',
+          message: JSON.stringify(arguments),
+          from: name
+        };
+        window.postMessage(msg, "*");
+        return origFunction.apply(this, arguments);
+      }
+    }
+  });
 
   // handle messages from ext
   window.addEventListener("message", function(ev) {
