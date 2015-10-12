@@ -7,8 +7,6 @@ chrome.extension.onConnect.addListener(function (port) {
       //"currentWindow": true,
       "url": "*://*.collectriumdev.com/*"
     }, function (tabs) {
-      alert('Tabs: ' + tabs.length);
-      debugger;
       for (tab in tabs) {
         //Sending Message to content scripts
         chrome.tabs.sendMessage(tabs[tab].id, message);
@@ -18,6 +16,7 @@ chrome.extension.onConnect.addListener(function (port) {
   });
   //Posting back to Devtools
   chrome.extension.onMessage.addListener(function (message, sender) {
+    debugger;
     port.postMessage(message);
   });
 });

@@ -17,6 +17,9 @@ $(function() {
 
   port.onMessage.addListener(function (msg) {
     msg = msg || {};
+    if(msg.target !== 'devtool') {
+      return;
+    }
     var action = (msg.action || 'unknown') + 'Action';
 
     var ret = actions[action](msg);
@@ -31,6 +34,7 @@ $(function() {
   $(document.body).on('click', '#sendMsg', function() {
     port.postMessage({
         action: '',
+        target: 'contentPage',
         msg: $('#msgToSend').val()
       });
   });
