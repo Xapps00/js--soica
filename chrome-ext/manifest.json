@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "devtools",
+  "name": "SocketIO client for Apollo project",
   "version": "0.1.0",
-  "description": "An example devtools ext",
+  "description": "Send request / Get response",
   "devtools_page": "devtools.html",
   "background": {
     "scripts": ["background.js"],
