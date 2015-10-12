@@ -1,12 +1,17 @@
 $(function() {
   'use strict';
 
+  var typeBlocks = ['packet', 'onPacket'];
   var actions = {
-    unknownAction: function(ret) {
-      if(typeof ret !== 'string') {
-        ret = '' + ret.from + ' to ' + ret.target + '<hr />' + JSON.stringify(JSON.parse(ret.message), null, ' ' );
+    unknownAction: function(data) {
+      var str;
+      if(typeof data !== 'string') {
+        str = '' + data.from + ' to ' + data.target + '<hr />' + JSON.stringify(JSON.parse(data.message), null, ' ' );
+      } else {
+        str = data;
       }
-      $('#output').html(ret);
+      var blockId = (typeBlocks.indexOf(data.from) >= 0)? data.from : 'output';
+      $('#' + blockId).html(str);
     }
   };
 
@@ -33,9 +38,9 @@ $(function() {
 
   $(document.body).on('click', '#sendMsg', function() {
     port.postMessage({
-        action: '',
+        action: 'sendPacket',
         target: 'contentPage',
-        msg: $('#msgToSend').val()
+        message: $('#msgToSend').val()
       });
   });
 });

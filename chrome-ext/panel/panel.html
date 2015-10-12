@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<table>
+<table class="top-aligned full-width">
     <tr>
         <td><textarea id="msgToSend"></textarea>
             <button id="sendMsg">Send</button>
@@ -17,7 +17,14 @@
     </tr>
 </table>
 
-<pre id="output"></pre>
+<table class="top-aligned full-width">
+    <tr>
+        <td><pre class="output-block" id="packet"></pre></td>
+        <td><pre class="output-block" id="onPacket"></pre></td>
+        <td><pre class="output-block" id="output"></pre></td>
+    </tr>
+</table>
+
 <script src="vendor/jquery/dist/jquery.js"></script>
 <script src="panel.js"></script>
 </body>

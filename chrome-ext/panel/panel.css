@@ -6,3 +6,12 @@ button {
     padding: 5px;
     border-radius: 5px;
 }
+
+
+table.top-aligned td {
+    vertical-align: top;
+}
+
+.full-width {
+    width: 100%;
+}

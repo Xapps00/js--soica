@@ -25,11 +25,13 @@
 })();
 
 function pageScript() {
+  var lastUsedSocketNamespace;
+
   // actions handlers
   var actions = {
     unknownAction: function(data) {
       var title = $('title').text();
-      var msg = title + '\n\n' + JSON.stringify(data.msg);
+      var msg = title + '\n\n' + JSON.stringify(data.message);
       setTimeout(function() {
         var answ = prompt(msg);
         window.postMessage({
@@ -37,6 +39,9 @@ function pageScript() {
           target: 'devtool'
         }, '*');
       }, 500);
+    },
+    sendPacketAction: function(data) {
+      lastUsedSocketNamespace.packet(JSON.parse(data.message));
     }
   };
 
@@ -47,11 +52,12 @@ function pageScript() {
     if(!soketPrototype['_' + name]) {
       var origFunction = soketPrototype[name];
       soketPrototype['_' + name] = origFunction;
-      soketPrototype[name] = function() {
+      soketPrototype[name] = function(packet) {
+        lastUsedSocketNamespace = this;
         var msg = {
           target: 'devtool',
           action: '',
-          message: JSON.stringify(arguments),
+          message: JSON.stringify(packet),
           from: name
         };
         window.postMessage(msg, "*");
