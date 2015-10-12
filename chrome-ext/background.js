@@ -16,7 +16,6 @@ chrome.extension.onConnect.addListener(function (port) {
   });
   //Posting back to Devtools
   chrome.extension.onMessage.addListener(function (message, sender) {
-    debugger;
     port.postMessage(message);
   });
 });

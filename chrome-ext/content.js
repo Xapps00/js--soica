@@ -16,27 +16,31 @@
 
     var data = ev.data;
     if(data.target === 'devtool') {
-      debugger;
       console.info("SOICa recieve message for devtool: ", data);
       chrome.extension.sendMessage(data);
     }
   });
-  //window.addEventListener("message", function(ev) {
-  //  if (ev.source != window)
-  //    return;
-  //
-  //  var data = ev.data;
-  //  if(data.target === 'contentPage') {
-  //    console.info("SOICa recieve message for devtool: ", data);
-  //    debugger;
-  //    port.postMessage(data);
-  //  }
-  //});
 
   injectPageScript();
 })();
 
 function pageScript() {
+  // actions handlers
+  var actions = {
+    unknownAction: function(data) {
+      var title = $('title').text();
+      var msg = title + '\n\n' + JSON.stringify(data.msg);
+      setTimeout(function() {
+        var answ = prompt(msg);
+        window.postMessage({
+          message: answ,
+          target: 'devtool'
+        }, '*');
+      }, 500);
+    }
+  };
+
+  // patch soket.io
   var soketPrototype = io.Socket.prototype;
   if(!soketPrototype._on && !soketPrototype._emit) {
     soketPrototype._on = soketPrototype.on;
@@ -46,7 +50,6 @@ function pageScript() {
         action: 'socketOn',
         message: JSON.stringify(arguments)
       };
-      debugger;
       window.postMessage(msg, "*");
       console.info('Patched func', msg);
 
@@ -59,7 +62,6 @@ function pageScript() {
         action: 'socketEmit',
         message: JSON.stringify(arguments)
       };
-      debugger;
       window.postMessage(msg, "*");
       console.info('Patched func', msg);
 
@@ -71,15 +73,8 @@ function pageScript() {
   window.addEventListener("message", function(ev) {
     var data = ev.data;
     if(data.target === 'contentPage') {
-      var title = $('title').text();
-      var msg = title + '\n\n' + JSON.stringify(data.msg);
-      setTimeout(function() {
-        var answ = prompt(msg);
-        window.postMessage({
-          message: answ,
-          target: 'devtool'
-        }, '*');
-      }, 500);
+      var action = (data.action || 'unknown') + 'Action';
+      actions[action](data);
     }
   });
 }
