@@ -7,23 +7,26 @@
 </head>
 <body>
 
-<table class="top-aligned full-width">
-    <tr>
-        <td><textarea id="msgToSend"></textarea>
-            <button id="sendMsg">Send</button>
-            <button id="fillMsg">Fill</button>
-        </td>
-        <td><div id="msgResponse"></div></td>
-    </tr>
-</table>
+<div class="content hidden">
+    <table class="top-aligned full-width">
+        <tr>
+            <td><textarea id="msgToSend"></textarea>
+                <button id="sendMsg">Send</button>
+                <button id="fillMsg">Fill</button>
+            </td>
+            <td><div id="msgResponse"></div></td>
+        </tr>
+    </table>
 
-<table class="top-aligned full-width">
-    <tr>
-        <td><pre class="output-block" id="packet"></pre></td>
-        <td><pre class="output-block" id="onPacket"></pre></td>
-        <td><pre class="output-block" id="output"></pre></td>
-    </tr>
-</table>
+    <table class="top-aligned full-width">
+        <tr>
+            <td><pre class="output-block" id="packet"></pre></td>
+            <td><pre class="output-block" id="onPacket"></pre></td>
+            <td><pre class="output-block" id="output"></pre></td>
+        </tr>
+    </table>
+</div>
+<div class="stub">Open correct url</div>
 
 <script src="vendor/jquery/dist/jquery.js"></script>
 <script src="panel.js"></script>

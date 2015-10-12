@@ -12,6 +12,10 @@ $(function() {
       }
       var blockId = (typeBlocks.indexOf(data.from) >= 0)? data.from : 'output';
       $('#' + blockId).html(str);
+    },
+    activateAction: function() {
+      $('.stub').addClass('hidden');
+      $('.content').removeClass('hidden');
     }
   };
 

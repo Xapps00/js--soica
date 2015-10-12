@@ -66,6 +66,13 @@ function pageScript() {
     }
   });
 
+  window.postMessage({
+    action: 'activate',
+    target: 'devtool',
+    message: '',
+    from: 'pageScript'
+  }, '*');
+
   // handle messages from ext
   window.addEventListener("message", function(ev) {
     var data = ev.data;
